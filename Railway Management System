@@ -1,0 +1,208 @@
+#include <iostream>
+
+#include <vector>
+
+#include <string>
+
+
+
+using namespace std;
+
+
+
+class Train {
+
+public:
+
+    string trainNumber;
+
+    string trainName;
+
+    int seatsAvailable;
+
+
+
+    Train(string number, string name, int seats)
+
+        : trainNumber(number), trainName(name), seatsAvailable(seats) {}
+
+};
+
+
+
+class Passenger {
+
+public:
+
+    string name;
+
+    string trainNumber;
+
+
+
+    Passenger(string name, string train)
+
+        : name(name), trainNumber(train) {}
+
+};
+
+
+
+class RailwayManagementSystem {
+
+private:
+
+    vector<Train> trains;
+
+    vector<Passenger> passengers;
+
+
+
+public:
+
+    void addTrain(string number, string name, int seats) {
+
+        trains.emplace_back(number, name, seats);
+
+    }
+
+
+
+    void bookTicket(string passengerName, string trainNumber) {
+
+        for (auto &train : trains) {
+
+            if (train.trainNumber == trainNumber) {
+
+                if (train.seatsAvailable > 0) {
+
+                    passengers.emplace_back(passengerName, trainNumber);
+
+                    train.seatsAvailable--;
+
+                    cout << "Ticket booked successfully for " << passengerName << " on train " << trainNumber << endl;
+
+                    return;
+
+                } else {
+
+                    cout << "No seats available on train " << trainNumber << endl;
+
+                    return;
+
+                }
+
+            }
+
+        }
+
+        cout << "Train " << trainNumber << " not found." << endl;
+
+    }
+
+
+
+    void displayTrains() {
+
+        cout << "Available Trains:\n";
+
+        for (const auto &train : trains) {
+
+            cout << "Train Number: " << train.trainNumber << ", Name: " << train.trainName 
+
+                 << ", Seats Available: " << train.seatsAvailable << endl;
+
+        }
+
+    }
+
+
+
+    void displayPassengers() {
+
+        cout << "Passengers:\n";
+
+        for (const auto &passenger : passengers) {
+
+            cout << "Passenger Name: " << passenger.name << ", Train Number: " << passenger.trainNumber << endl;
+
+        }  } };
+
+
+
+int main() {
+
+    RailwayManagementSystem rms;
+
+
+
+    rms.addTrain("12345", "Express Train", 5);
+
+    rms.addTrain("54321", "Local Train", 3);
+
+
+
+    int choice;
+
+    string name, trainNumber;
+
+
+
+    do {
+
+        cout << "\n1. Display Trains\n2. Book Ticket\n3. Display Passengers\n4. Exit\n";
+
+        cout << "Enter your choice: ";
+
+        cin >> choice;
+
+
+
+        switch (choice) {
+
+            case 1:
+
+                rms.displayTrains();
+
+                break;
+
+            case 2:
+
+                cout << "Enter passenger name: ";
+
+                cin >> ws;  // To ignore leading whitespace
+
+                getline(cin, name);
+
+                cout << "Enter train number: ";
+
+                cin >> trainNumber;
+
+                rms.bookTicket(name, trainNumber);
+
+                break;
+
+            case 3:
+
+                rms.displayPassengers();
+
+                break;
+
+            case 4:
+
+                cout << "Exiting...\n";
+
+                break;
+
+            default:
+
+                cout << "Invalid choice. Please try again.\n";
+
+        }
+
+    } while (choice != 4);
+
+return 0;
+
+}
+
